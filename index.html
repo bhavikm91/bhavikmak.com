@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://www.bhavikmak.com/">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.workers.dev">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -279,6 +279,54 @@ section{margin-bottom:6.5rem;}
   .fade{transition:none;}
   .nav-line{transition:none;}
   .s-dot{animation:none;}
+}
+
+/* ── CV CHAT WIDGET ── */
+#cv-chat{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;}
+#cv-chat-btn{display:flex;align-items:center;gap:.55rem;background:var(--accent);color:#fff;border:none;border-radius:50px;padding:.65rem 1.15rem .65rem .95rem;font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer;box-shadow:0 4px 20px rgba(56,189,248,.35);transition:transform .2s,box-shadow .2s;white-space:nowrap;}
+:root[data-theme="light"] #cv-chat-btn{box-shadow:0 4px 20px rgba(2,132,199,.22);}
+#cv-chat-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(56,189,248,.45);}
+#cv-chat-panel{position:absolute;bottom:calc(100% + .75rem);right:0;width:360px;max-height:520px;background:var(--surface);border:1px solid var(--bord-h);border-radius:18px;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden;animation:chatUp .22s ease;}
+#cv-chat-panel[hidden]{display:none;}
+@keyframes chatUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+.cv-head{display:flex;align-items:center;gap:.7rem;padding:.9rem 1rem;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surf2);}
+.cv-avatar{width:34px;height:34px;border-radius:9px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.74rem;color:#fff;flex-shrink:0;letter-spacing:-.01em;}
+.cv-headinfo{flex:1;min-width:0;}
+.cv-headtitle{font-size:.88rem;font-weight:700;color:var(--text);line-height:1.2;}
+.cv-headsub{font-size:.66rem;color:var(--dim);margin-top:.1rem;}
+#cv-close{background:none;border:1px solid var(--border);border-radius:7px;width:26px;height:26px;cursor:pointer;color:var(--dim);font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s;flex-shrink:0;line-height:1;font-family:inherit;}
+#cv-close:hover{border-color:var(--accent);color:var(--accent);}
+.cv-qs{padding:.6rem .9rem;display:flex;gap:.4rem;overflow-x:auto;flex-shrink:0;border-bottom:1px solid var(--border);scrollbar-width:none;}
+.cv-qs::-webkit-scrollbar{display:none;}
+.cv-q-btn{flex-shrink:0;background:var(--acc-dim);color:var(--accent);border:1px solid rgba(56,189,248,.2);border-radius:100px;padding:.25rem .7rem;font-size:.67rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s;font-family:inherit;}
+.cv-q-btn:hover{background:rgba(56,189,248,.18);}
+#cv-msgs{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.65rem;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.cv-msg{display:flex;flex-direction:column;max-width:88%;}
+.cv-msg.user{align-self:flex-end;align-items:flex-end;}
+.cv-msg.asst{align-self:flex-start;align-items:flex-start;}
+.cv-bub{padding:.55rem .8rem;border-radius:13px;font-size:.84rem;line-height:1.6;word-break:break-word;white-space:pre-wrap;}
+.cv-msg.user .cv-bub{background:var(--accent);color:#fff;border-bottom-right-radius:3px;}
+.cv-msg.asst .cv-bub{background:var(--surf2);color:var(--muted);border:1px solid var(--border);border-bottom-left-radius:3px;}
+.cv-typing{display:flex;align-items:center;gap:4px;padding:.55rem .8rem;background:var(--surf2);border:1px solid var(--border);border-radius:13px;border-bottom-left-radius:3px;width:fit-content;}
+.cv-typing span{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:tdot .9s ease-in-out infinite;}
+.cv-typing span:nth-child(2){animation-delay:.15s;}
+.cv-typing span:nth-child(3){animation-delay:.3s;}
+@keyframes tdot{0%,60%,100%{transform:none;opacity:.4;}30%{transform:translateY(-5px);opacity:1;}}
+.cv-foot{border-top:1px solid var(--border);padding:.7rem .85rem;display:flex;gap:.45rem;flex-shrink:0;}
+#cv-input{flex:1;background:var(--surf2);border:1px solid var(--border);border-radius:9px;padding:.5rem .8rem;font-size:.84rem;font-family:inherit;color:var(--text);outline:none;transition:border-color .2s;min-width:0;}
+#cv-input::placeholder{color:var(--dim);}
+#cv-input:focus{border-color:var(--accent);}
+#cv-send{background:var(--accent);border:none;border-radius:9px;width:34px;height:34px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s;}
+#cv-send:hover{opacity:.85;}
+#cv-send:disabled{opacity:.4;cursor:default;}
+.cv-attr{text-align:center;font-size:.58rem;color:var(--dim);padding:.3rem 0 .1rem;}
+.cv-attr a{color:var(--dim);text-decoration:none;}
+@media(max-width:480px){
+  #cv-chat{bottom:1rem;right:1rem;}
+  #cv-chat-panel{position:fixed;bottom:0;left:0;right:0;top:auto;width:100%;max-height:78vh;border-radius:20px 20px 0 0;animation:chatUpMob .22s ease;}
+  @keyframes chatUpMob{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+  #cv-chat-btn .btn-label{display:none;}
+  #cv-chat-btn{padding:.7rem .9rem;}
 }
 </style>
 </head>
@@ -559,6 +607,42 @@ section{margin-bottom:6.5rem;}
   <p>&#169; 2026 Bhavik Makwana &nbsp;&middot;&nbsp; Built with <a href="https://claude.ai">Claude</a> &nbsp;&middot;&nbsp; <a href="https://salaryguru.co.uk/">SalaryGuru.co.uk</a> &nbsp;&middot;&nbsp; <a href="https://topmate.io/bhavikm">Topmate</a></p>
 </footer>
 
+<!-- CHAT WIDGET -->
+<div id="cv-chat" role="complementary" aria-label="CV chat assistant">
+  <button id="cv-chat-btn" aria-label="Chat with Bhavik's CV">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    <span class="btn-label">Ask me anything</span>
+  </button>
+  <div id="cv-chat-panel" hidden role="dialog" aria-modal="true" aria-label="CV Chat">
+    <div class="cv-head">
+      <div class="cv-avatar">BM</div>
+      <div class="cv-headinfo">
+        <div class="cv-headtitle">Ask me anything</div>
+        <div class="cv-headsub">About Bhavik&#8217;s career &amp; experience</div>
+      </div>
+      <button id="cv-close" aria-label="Close chat">&times;</button>
+    </div>
+    <div class="cv-qs" aria-label="Suggested questions">
+      <button class="cv-q-btn">What is he working on?</button>
+      <button class="cv-q-btn">Payments experience</button>
+      <button class="cv-q-btn">Book a consulting call</button>
+      <button class="cv-q-btn">UK Global Talent Visa</button>
+      <button class="cv-q-btn">AI tools he uses</button>
+    </div>
+    <div id="cv-msgs" role="log" aria-live="polite">
+      <div class="cv-msg asst"><div class="cv-bub">&#128075; Hi! Ask me anything about Bhavik&#8217;s career, experience, skills, or consulting services.</div></div>
+    </div>
+    <div class="cv-foot">
+      <input id="cv-input" type="text" placeholder="Ask about his experience&#8230;" maxlength="300" autocomplete="off" aria-label="Your question">
+      <button id="cv-send" aria-label="Send message">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+    <div class="cv-attr">Powered by <a href="https://claude.ai" target="_blank" rel="noopener noreferrer">Claude</a></div>
+  </div>
+</div>
+
+
 <script>
 // ── THEME TOGGLE ──
 (function() {
@@ -626,6 +710,143 @@ document.getElementById('mob-menu-btn').addEventListener('click', () => {
 document.querySelectorAll('.mob-link').forEach(link => {
   link.addEventListener('click', () => { mobPanel.style.display = 'none'; });
 });
+
+// ── CV CHAT WIDGET ──
+(function(){
+  // After deploying worker.js to Cloudflare Workers, paste your Worker URL here:
+  var WORKER_URL = '';
+
+  var panel   = document.getElementById('cv-chat-panel');
+  var openBtn = document.getElementById('cv-chat-btn');
+  var closeBtn= document.getElementById('cv-close');
+  var msgs    = document.getElementById('cv-msgs');
+  var input   = document.getElementById('cv-input');
+  var sendBtn = document.getElementById('cv-send');
+
+  if (!panel) return; // widget not in DOM
+
+  var history = [];
+  var busy    = false;
+  var LIMIT   = 30;
+
+  openBtn.addEventListener('click', function(){ panel.hidden = false; input.focus(); });
+  closeBtn.addEventListener('click', function(){ panel.hidden = true; });
+
+  document.querySelectorAll('.cv-q-btn').forEach(function(q){
+    q.addEventListener('click', function(){ if (!busy){ input.value = q.textContent; submit(); } });
+  });
+
+  function scrollBottom(){ requestAnimationFrame(function(){ msgs.scrollTop = msgs.scrollHeight; }); }
+
+  function bubble(role, text){
+    var wrap = document.createElement('div');
+    wrap.className = 'cv-msg ' + role;
+    var bub = document.createElement('div');
+    bub.className = 'cv-bub';
+    bub.textContent = text;
+    wrap.appendChild(bub);
+    msgs.appendChild(wrap);
+    scrollBottom();
+    return bub;
+  }
+
+  var typingEl = null;
+  function showTyping(){
+    var wrap = document.createElement('div');
+    wrap.className = 'cv-msg asst';
+    wrap.id = 'cv-typing';
+    wrap.innerHTML = '<div class="cv-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(wrap);
+    typingEl = wrap;
+    scrollBottom();
+  }
+  function hideTyping(){ if(typingEl){ typingEl.remove(); typingEl = null; } }
+
+  async function submit(){
+    var text = input.value.trim();
+    if (!text || busy) return;
+    if (history.length >= LIMIT){
+      bubble('asst', "We've reached the conversation limit for this session. Reload the page to start fresh!");
+      return;
+    }
+
+    input.value = '';
+    busy = true;
+    sendBtn.disabled = true;
+
+    bubble('user', text);
+    history.push({ role:'user', content:text });
+
+    if (!WORKER_URL){
+      showTyping();
+      await new Promise(function(r){ setTimeout(r, 700); });
+      hideTyping();
+      bubble('asst', "The AI chat isn’t connected yet — the Cloudflare Worker backend needs to be deployed first. Check the repo’s worker.js for setup instructions.");
+      busy = false; sendBtn.disabled = false;
+      return;
+    }
+
+    showTyping();
+    var full = '';
+    var bub  = null;
+
+    try {
+      var res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+      });
+      if (!res.ok) throw new Error('status ' + res.status);
+
+      hideTyping();
+      bub = bubble('asst', '');
+
+      var reader  = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buf = '';
+
+      while (true){
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        buf += decoder.decode(chunk.value, { stream: true });
+        var lines = buf.split('\n');
+        buf = lines.pop();
+        for (var i = 0; i < lines.length; i++){
+          var line = lines[i];
+          if (!line.startsWith('data:')) continue;
+          var raw = line.slice(5).trim();
+          if (raw === '[DONE]') break;
+          try {
+            var ev = JSON.parse(raw);
+            if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta'){
+              full += ev.delta.text;
+              bub.textContent = full;
+              scrollBottom();
+            }
+          } catch(e){}
+        }
+      }
+
+      if (full) history.push({ role:'assistant', content:full });
+
+    } catch(err){
+      hideTyping();
+      if (bub) bub.textContent = 'Sorry, something went wrong — please try again.';
+      else bubble('asst', 'Sorry, something went wrong — please try again.');
+      history.pop();
+    }
+
+    busy = false;
+    sendBtn.disabled = false;
+    input.focus();
+  }
+
+  sendBtn.addEventListener('click', submit);
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); submit(); }
+  });
+})();
+
 </script>
 </body>
 </html>
