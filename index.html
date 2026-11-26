@@ -19,12 +19,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/*
-  Layout : sticky left sidebar (280px) + scrollable right main
-  Type   : Space Grotesk (headings) · Inter (body)
-  Palette: dark-first — navy bg · sky-blue accent · emerald for metrics
-*/
-
 :root {
   --bg:      #0c0e17;
   --surface: #12152a;
@@ -100,7 +94,7 @@ a{color:inherit;text-decoration:none;}
 .nav-link:hover .nav-line,.nav-link.active .nav-line{width:48px;background:var(--accent);}
 
 .sidebar-socials{display:flex;gap:1.1rem;margin-top:2.5rem;flex-wrap:wrap;}
-.social-link{display:flex;align-items:center;gap:.35rem;font-size:.68rem;font-weight:600;letter-spacing:.05em;color:var(--dim);transition:color .2s;}
+.social-link{display:flex;align-items:center;gap:.35rem;font-size:.68rem;font-weight:600;letter-spacing:.05em;color:var(--dim);transition:color .2s;white-space:nowrap;}
 .social-link:hover{color:var(--accent);}
 .social-link svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
 
@@ -138,7 +132,15 @@ section{margin-bottom:6.5rem;}
 .exp-list{display:flex;flex-direction:column;}
 .exp-card{position:relative;padding:1.6rem;border-radius:14px;border:1px solid transparent;transition:background .2s,border-color .2s;margin-bottom:.35rem;}
 .exp-card:hover{background:var(--surface);border-color:var(--border);}
-.exp-co{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;}
+
+/* company header with logo */
+.exp-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.45rem;}
+.co-logo{width:34px;height:34px;flex-shrink:0;border-radius:8px;overflow:hidden;line-height:0;}
+.co-logo svg{width:34px;height:34px;display:block;}
+
+.exp-co{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;flex:1;}
+.exp-co a{color:inherit;transition:opacity .2s;}
+.exp-co a:hover{opacity:.7;text-decoration:underline;}
 .cur-badge{background:var(--grn-dim);color:var(--green);border:1px solid rgba(52,211,153,.22);font-size:.58rem;font-weight:700;letter-spacing:.06em;padding:.12rem .45rem;border-radius:100px;text-transform:uppercase;}
 .exp-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.35rem;}
 .exp-role{font-family:'Space Grotesk',system-ui,sans-serif;font-size:.975rem;font-weight:600;color:var(--text);}
@@ -189,7 +191,7 @@ section{margin-bottom:6.5rem;}
 .contact-card:hover{border-color:var(--accent);transform:translateY(-2px);}
 .con-ico{font-size:1.2rem;margin-bottom:.5rem;}
 .con-label{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:.25rem;}
-.con-val{font-size:.72rem;font-weight:500;color:var(--muted);}
+.con-val{font-size:.72rem;font-weight:500;color:var(--muted);word-break:break-all;}
 
 /* footer */
 .footer{padding:1.75rem 3.5rem 1.75rem 4rem;font-size:.7rem;color:var(--dim);border-top:1px solid var(--border);margin-left:280px;}
@@ -209,24 +211,48 @@ section{margin-bottom:6.5rem;}
 .mob-link:last-child{border-bottom:none;}
 .mob-link:hover{color:var(--accent);}
 
-/* responsive */
+/* responsive — tablet */
 @media(max-width:1024px){
   .sidebar{width:250px;padding:4rem 1.75rem 2rem;}
   .main{padding:4rem 2rem 6rem 2.5rem;}
   .footer{margin-left:250px;padding:1.5rem 2rem 1.5rem 2.5rem;}
 }
+
+/* responsive — mobile */
 @media(max-width:768px){
   .page{flex-direction:column;}
   .sidebar{display:none;}
   .mob-header{display:flex;}
-  .main{padding:4.5rem 1.25rem 4rem;max-width:none;}
-  .footer{margin-left:0;padding:1.25rem;}
+  .main{padding:5rem 1.1rem 4rem;max-width:none;}
+  .footer{margin-left:0;padding:1.25rem 1.1rem;}
   .highlights{grid-template-columns:1fr;}
   .edu-grid{grid-template-columns:1fr;}
   .stats-strip{flex-direction:column;}
   .stat{border-right:none;border-bottom:1px solid var(--border);}
   .stat:last-child{border-bottom:none;}
+  .stat-num{font-size:1.6rem;}
+  .contact-grid{grid-template-columns:1fr 1fr;}
+  .projects-grid{grid-template-columns:1fr;}
+  .exp-top{flex-wrap:wrap;gap:.3rem;}
+  .exp-period{flex-shrink:0;}
+  .sec-title{font-size:clamp(1.35rem,5vw,1.75rem);}
+  section{margin-bottom:4.5rem;}
 }
+
+/* responsive — small phones */
+@media(max-width:420px){
+  .main{padding:5rem .85rem 3.5rem;}
+  .footer{padding:1.25rem .85rem;}
+  .contact-grid{grid-template-columns:1fr;}
+  .con-val{font-size:.68rem;}
+  .stat-num{font-size:1.45rem;}
+  .exp-role{font-size:.9rem;}
+  .exp-bullets li{font-size:.74rem;}
+  .about-body p{font-size:.83rem;}
+  .highlights{gap:.5rem;}
+  .hi{padding:.8rem .9rem;}
+}
+
 @media(prefers-reduced-motion:reduce){
   .fade{transition:none;}
   .nav-line{transition:none;}
@@ -276,7 +302,7 @@ section{margin-bottom:6.5rem;}
         <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.063 2.063 0 1 1 0-4.126 2.063 2.063 0 0 1 0 4.126zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn
       </a>
       <a href="tel:+447931262197" class="social-link">
-        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>+44 7931
+        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>+44 7931 262197
       </a>
     </div>
   </aside>
@@ -296,7 +322,7 @@ section{margin-bottom:6.5rem;}
       </div>
       <div class="stats-strip fade">
         <div class="stat"><div class="stat-num">12<span class="a">+</span></div><div class="stat-label">Years Experience</div></div>
-        <div class="stat"><div class="stat-num">$300<span class="a">B</span></div><div class="stat-label">Payment Volume (CKO)</div></div>
+        <div class="stat"><div class="stat-num">14<span class="a">+</span></div><div class="stat-label">Countries Shipped</div></div>
         <div class="stat"><div class="stat-num">180M<span class="a">+</span></div><div class="stat-label">Users Impacted</div></div>
         <div class="stat"><div class="stat-num">0<span class="a">&rarr;</span>1</div><div class="stat-label">Track Record</div></div>
       </div>
@@ -315,9 +341,17 @@ section{margin-bottom:6.5rem;}
       <div class="exp-list">
 
         <div class="exp-card fade">
-          <div class="exp-co">Checkout.com <span class="cur-badge">Current</span></div>
+          <div class="exp-header">
+            <div class="co-logo">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+                <rect width="34" height="34" rx="8" fill="#0049EE"/>
+                <polyline points="8,17 14,23 26,11" stroke="white" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="exp-co"><a href="https://www.checkout.com" target="_blank" rel="noopener noreferrer">Checkout.com</a> <span class="cur-badge">Current</span></div>
+          </div>
           <div class="exp-top"><div class="exp-role">Product Lead &mdash; Pay to Card</div><div class="exp-period">Jun 2026 &ndash; Present</div></div>
-          <div class="exp-desc">Leading global digital payments platform &middot; $300B+ annual payment volume &middot; Principal member of Visa &amp; Mastercard</div>
+          <div class="exp-desc">Leading global digital payments platform &middot; Principal member of Visa &amp; Mastercard</div>
           <ul class="exp-bullets">
             <li>Defining and executing the growth strategy for <strong>Pay-to-Card</strong> across live markets (US, UK, EEA, MENA, Singapore) &mdash; the company's second-largest revenue product</li>
             <li>Led the launch of Pay-to-Card in Canada &mdash; expected <strong>~$2B pipeline</strong> over 2 years; aligned with CXOs and 33 cross-functional leaders to deliver market entry</li>
@@ -329,7 +363,15 @@ section{margin-bottom:6.5rem;}
         </div>
 
         <div class="exp-card fade">
-          <div class="exp-co">Rakuten Viber Pay</div>
+          <div class="exp-header">
+            <div class="co-logo">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+                <rect width="34" height="34" rx="8" fill="#59267C"/>
+                <text x="17" y="23" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="white">V</text>
+              </svg>
+            </div>
+            <div class="exp-co"><a href="https://www.viber.com" target="_blank" rel="noopener noreferrer">Rakuten Viber Pay</a></div>
+          </div>
           <div class="exp-top"><div class="exp-role">Staff Product Manager &mdash; Growth &amp; Engagement</div><div class="exp-period">Feb 2024 &ndash; Jun 2026</div></div>
           <div class="exp-desc">World's leading messaging &amp; VoIP platform &middot; 1B+ registered users &middot; 190+ countries</div>
           <ul class="exp-bullets">
@@ -343,7 +385,15 @@ section{margin-bottom:6.5rem;}
         </div>
 
         <div class="exp-card fade">
-          <div class="exp-co">Delivery Hero</div>
+          <div class="exp-header">
+            <div class="co-logo">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+                <rect width="34" height="34" rx="8" fill="#E30613"/>
+                <text x="17" y="23" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="white">DH</text>
+              </svg>
+            </div>
+            <div class="exp-co"><a href="https://www.deliveryhero.com" target="_blank" rel="noopener noreferrer">Delivery Hero</a></div>
+          </div>
           <div class="exp-top"><div class="exp-role">Lead Product Manager &mdash; Search &amp; Discovery</div><div class="exp-period">Jul 2022 &ndash; Feb 2024</div></div>
           <div class="exp-desc">Global food-tech marketplace &middot; 14 countries &middot; 6 brands &middot; ~180M MAU</div>
           <ul class="exp-bullets">
@@ -358,7 +408,15 @@ section{margin-bottom:6.5rem;}
         </div>
 
         <div class="exp-card fade">
-          <div class="exp-co">Blibli</div>
+          <div class="exp-header">
+            <div class="co-logo">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="17" cy="17" r="17" fill="#0097D1"/>
+                <text x="17" y="23" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="white">bli</text>
+              </svg>
+            </div>
+            <div class="exp-co"><a href="https://www.blibli.com" target="_blank" rel="noopener noreferrer">Blibli</a></div>
+          </div>
           <div class="exp-top"><div class="exp-role">Lead Product Manager &mdash; Marketplace</div><div class="exp-period">Nov 2020 &ndash; Jun 2022</div></div>
           <div class="exp-desc">Indonesia's leading P2P &amp; e-commerce marketplace &middot; 600k+ sellers</div>
           <ul class="exp-bullets">
@@ -372,7 +430,16 @@ section{margin-bottom:6.5rem;}
         </div>
 
         <div class="exp-card fade">
-          <div class="exp-co">Amazon Pay</div>
+          <div class="exp-header">
+            <div class="co-logo">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+                <rect width="34" height="34" rx="6" fill="#232F3E"/>
+                <text x="17" y="15" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="9" fill="white">amazon</text>
+                <text x="17" y="27" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="11" fill="#FF9900">pay</text>
+              </svg>
+            </div>
+            <div class="exp-co"><a href="https://pay.amazon.in" target="_blank" rel="noopener noreferrer">Amazon Pay</a></div>
+          </div>
           <div class="exp-top"><div class="exp-role">Platform Product Manager &mdash; Travel</div><div class="exp-period">Aug 2018 &ndash; Nov 2020</div></div>
           <div class="exp-desc">Amazon India's digital payment service &middot; World-first travel booking launch</div>
           <ul class="exp-bullets">
@@ -386,7 +453,15 @@ section{margin-bottom:6.5rem;}
         </div>
 
         <div class="exp-card fade">
-          <div class="exp-co">Tapzo</div>
+          <div class="exp-header">
+            <div class="co-logo">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+                <rect width="34" height="34" rx="8" fill="#1a73e8"/>
+                <text x="17" y="23" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="17" fill="white">T</text>
+              </svg>
+            </div>
+            <div class="exp-co">Tapzo</div>
+          </div>
           <div class="exp-top"><div class="exp-role">Product Manager</div><div class="exp-period">Jan 2018 &ndash; Aug 2018</div></div>
           <div class="exp-desc">India's first all-in-one super-app (Sequoia-backed) &middot; 35+ daily services</div>
           <ul class="exp-bullets">
@@ -397,7 +472,15 @@ section{margin-bottom:6.5rem;}
         </div>
 
         <div class="exp-card fade">
-          <div class="exp-co">Genpact</div>
+          <div class="exp-header">
+            <div class="co-logo">
+              <svg viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg">
+                <rect width="34" height="34" rx="6" fill="#6C3789"/>
+                <text x="17" y="24" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="18" fill="white">G</text>
+              </svg>
+            </div>
+            <div class="exp-co"><a href="https://www.genpact.com" target="_blank" rel="noopener noreferrer">Genpact</a></div>
+          </div>
           <div class="exp-top"><div class="exp-role">Digital Product Consultant</div><div class="exp-period">May 2016 &ndash; Dec 2017</div></div>
           <div class="exp-desc">Global digital consulting firm &middot; Capital markets &amp; financing &middot; ~60 countries</div>
           <ul class="exp-bullets">
