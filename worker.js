@@ -99,7 +99,7 @@ Tools: Figma, Jira, Mixpanel, Tableau, Braze, Confluence, GitHub, SQL
 
 ━━━ KEY STATS ━━━
 
-• 12+ years experience
+• 13+ years experience
 • 14+ countries shipped products
 • 180M+ users impacted
 • Multiple 0→1 product launches
@@ -130,6 +130,41 @@ export default {
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (!allowed) return new Response('Forbidden', { status: 403 });
+
+    const url = new URL(request.url);
+
+    // ── FEEDBACK ENDPOINT ──
+    if (url.pathname === '/feedback') {
+      if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
+      let data;
+      try { data = await request.json(); } catch { return new Response('Bad Request', { status: 400 }); }
+
+      if (env.FEEDBACK_KV) {
+        const id = crypto.randomUUID();
+        const key = `fb:${Date.now()}:${id}`;
+        await env.FEEDBACK_KV.put(key, JSON.stringify({
+          id,
+          ts: new Date().toISOString(),
+          rating: data.rating || 'down',
+          comment: (data.comment || '').slice(0, 500),
+          question: (data.question || '').slice(0, 300),
+          answer: (data.answer || '').slice(0, 500),
+        }));
+      }
+      return new Response(JSON.stringify({ ok: true }), { headers: { ...cors, 'Content-Type': 'application/json' } });
+    }
+
+    // ── FEEDBACK VIEWER (simple admin) ──
+    if (url.pathname === '/feedback/list' && request.method === 'GET') {
+      if (!env.FEEDBACK_KV) return new Response('KV not configured', { status: 503, headers: cors });
+      const list = await env.FEEDBACK_KV.list({ prefix: 'fb:', limit: 100 });
+      const items = await Promise.all(list.keys.map(k => env.FEEDBACK_KV.get(k.name, { type: 'json' })));
+      return new Response(JSON.stringify(items.filter(Boolean).reverse(), null, 2), {
+        headers: { ...cors, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // ── CHAT ENDPOINT ──
     if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
 
     let messages;

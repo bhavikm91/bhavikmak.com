@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bhavik Makwana — Product Lead</title>
-<meta name="description" content="Product Lead at Checkout.com · 12+ years in global fintech & AI. Checkout.com, Rakuten Viber, Delivery Hero, Amazon Pay. UK Global Talent Visa holder.">
+<meta name="description" content="Product Lead at Checkout.com · 13+ years in global fintech & AI. Checkout.com, Rakuten Viber, Delivery Hero, Amazon Pay. UK Global Talent Visa holder.">
 <meta name="keywords" content="Bhavik Makwana, Product Lead, Checkout.com, Rakuten Viber, Delivery Hero, Amazon Pay, Fintech, Payments, AI, UK Global Talent Visa">
 <meta property="og:title" content="Bhavik Makwana — Product Lead">
-<meta property="og:description" content="Product Lead at Checkout.com · 12+ years in global fintech & AI. UK Global Talent Visa holder.">
+<meta property="og:description" content="Product Lead at Checkout.com · 13+ years in global fintech & AI. UK Global Talent Visa holder.">
 <meta property="og:url" content="https://www.bhavikmak.com/">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -328,6 +328,23 @@ section{margin-bottom:6.5rem;}
   #cv-chat-btn .btn-label{display:none;}
   #cv-chat-btn{padding:.7rem .9rem;}
 }
+
+/* ── CHAT FEEDBACK (thumbs) ── */
+.cv-fb{display:flex;gap:.35rem;margin-top:.35rem;align-items:center;}
+.cv-fb-btn{background:none;border:1px solid var(--border);border-radius:7px;width:26px;height:26px;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;line-height:1;}
+.cv-fb-btn:hover{border-color:var(--accent);}
+.cv-fb-btn.up.active{border-color:#22c55e;background:rgba(34,197,94,.12);}
+.cv-fb-btn.dn.active{border-color:#ef4444;background:rgba(239,68,68,.1);}
+.cv-fb-btn:disabled{opacity:.4;cursor:default;}
+.cv-fb-form{margin-top:.4rem;display:flex;flex-direction:column;gap:.35rem;animation:chatUp .18s ease;}
+.cv-fb-txt{background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:.4rem .65rem;font-size:.78rem;font-family:inherit;color:var(--text);resize:none;outline:none;transition:border-color .2s;min-height:52px;}
+.cv-fb-txt:focus{border-color:var(--accent);}
+.cv-fb-txt::placeholder{color:var(--dim);}
+.cv-fb-row{display:flex;gap:.4rem;align-items:center;}
+.cv-fb-submit{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:.3rem .7rem;font-size:.74rem;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .15s;}
+.cv-fb-submit:hover{opacity:.85;}
+.cv-fb-submit:disabled{opacity:.4;cursor:default;}
+.cv-fb-thanks{font-size:.72rem;color:var(--dim);}
 </style>
 </head>
 <body>
@@ -356,7 +373,7 @@ section{margin-bottom:6.5rem;}
     <div class="status-pill"><span class="s-dot"></span>Product Lead &middot; Checkout.com</div>
     <h1 class="sidebar-name">Bhavik<br>Makwana<span class="dot">.</span></h1>
     <p class="sidebar-role">Product Lead &mdash; Fintech &amp; AI</p>
-    <p class="sidebar-bio">12+ years building global payment products at Checkout.com, Rakuten Viber &amp; Amazon Pay. UK Global Talent Visa holder.</p>
+    <p class="sidebar-bio">13+ years building global payment products at Checkout.com, Rakuten Viber &amp; Amazon Pay. UK Global Talent Visa holder.</p>
     <nav aria-label="Page sections">
       <ul class="sidebar-nav">
         <li><a href="#about"      class="nav-link"><span class="nav-line"></span><span>About</span></a></li>
@@ -738,16 +755,89 @@ document.querySelectorAll('.mob-link').forEach(link => {
 
   function scrollBottom(){ requestAnimationFrame(function(){ msgs.scrollTop = msgs.scrollHeight; }); }
 
-  function bubble(role, text){
+  function bubble(role, text, addFeedback){
     var wrap = document.createElement('div');
     wrap.className = 'cv-msg ' + role;
     var bub = document.createElement('div');
     bub.className = 'cv-bub';
     bub.textContent = text;
     wrap.appendChild(bub);
+    if (role === 'asst' && addFeedback !== false) {
+      var fb = makeFeedbackRow(bub);
+      wrap.appendChild(fb);
+    }
     msgs.appendChild(wrap);
     scrollBottom();
     return bub;
+  }
+
+  function makeFeedbackRow(bubEl) {
+    var row = document.createElement('div');
+    row.className = 'cv-fb';
+
+    var upBtn = document.createElement('button');
+    upBtn.className = 'cv-fb-btn up'; upBtn.title = 'Helpful'; upBtn.textContent = '\uD83D\uDC4D';
+    var dnBtn = document.createElement('button');
+    dnBtn.className = 'cv-fb-btn dn'; dnBtn.title = 'Not helpful'; dnBtn.textContent = '\uD83D\uDC4E';
+
+    row.appendChild(upBtn); row.appendChild(dnBtn);
+
+    function getContext() {
+      var allMsgs = msgs.querySelectorAll('.cv-msg');
+      var q = '', a = bubEl.textContent || '';
+      allMsgs.forEach(function(m) {
+        if (m.classList.contains('user') && m.nextElementSibling && m.nextElementSibling.querySelector && m.nextElementSibling.querySelector('.cv-bub') === bubEl) {
+          q = m.querySelector('.cv-bub') ? m.querySelector('.cv-bub').textContent : '';
+        }
+      });
+      // simpler: just get user message before this bubble via history
+      var h = history;
+      for (var i = h.length - 1; i >= 0; i--) {
+        if (h[i].role === 'assistant' && h[i].content === a) {
+          if (i > 0 && h[i-1].role === 'user') q = h[i-1].content;
+          break;
+        }
+      }
+      return { question: q, answer: a };
+    }
+
+    upBtn.addEventListener('click', function() {
+      upBtn.classList.add('active'); dnBtn.disabled = true;
+      var ctx = getContext();
+      if (WORKER_URL) fetch(WORKER_URL + '/feedback', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ rating:'up', question:ctx.question, answer:ctx.answer }) }).catch(function(){});
+    });
+
+    dnBtn.addEventListener('click', function() {
+      if (dnBtn.classList.contains('active')) return;
+      dnBtn.classList.add('active'); upBtn.disabled = true;
+      // show feedback form
+      var form = document.createElement('div');
+      form.className = 'cv-fb-form';
+      var txt = document.createElement('textarea');
+      txt.className = 'cv-fb-txt'; txt.placeholder = 'What could be improved? (optional)'; txt.rows = 2;
+      var frow = document.createElement('div'); frow.className = 'cv-fb-row';
+      var sub = document.createElement('button'); sub.className = 'cv-fb-submit'; sub.textContent = 'Send feedback';
+      var thanks = document.createElement('span'); thanks.className = 'cv-fb-thanks';
+      frow.appendChild(sub); frow.appendChild(thanks);
+      form.appendChild(txt); form.appendChild(frow);
+      row.parentNode.appendChild(form);
+      txt.focus();
+
+      sub.addEventListener('click', function() {
+        sub.disabled = true;
+        var ctx = getContext();
+        var payload = { rating:'down', comment: txt.value.trim(), question: ctx.question, answer: ctx.answer };
+        if (WORKER_URL) {
+          fetch(WORKER_URL + '/feedback', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+            .then(function(){ thanks.textContent = '\u2714 Thanks!'; form.removeChild(txt); sub.style.display='none'; })
+            .catch(function(){ thanks.textContent = 'Saved locally.'; });
+        } else {
+          thanks.textContent = '\u2714 Noted!';
+        }
+      });
+    });
+
+    return row;
   }
 
   var typingEl = null;
